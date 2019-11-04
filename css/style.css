@@ -1,0 +1,32 @@
+body,
+html {
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction:column;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+canvas {
+  border: 2px solid red;
+}
+.game-intro{
+    width: 100px;
+    height: 80px;
+}
+.game-intro img{
+    width: 70px;
+    height: 60px;
+}
+#start-button {
+  margin-bottom: 50px;
+}
+.game-board {
+  margin-top: 30px;
+}
