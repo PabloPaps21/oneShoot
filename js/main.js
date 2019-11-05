@@ -5,8 +5,8 @@ const images = {
   ship1: './images/Ship1.png',
   ship6: './images/Ship6.png',
   obst1: './images/obs.png',
-  bullet:'./images/bullet.png',
-  bullet2: './images/bullet2.png'
+  bulletG:'./images/bullet.png',
+  bulletP: './images/bullet2.png'
 };
 
 //sujetar canvas
@@ -44,7 +44,7 @@ class Board {
 }
 
 
-class Ship {
+class ShipG {
   constructor(){
     //size
     this.width = 100
@@ -111,7 +111,7 @@ class Ship {
   }
 }
 
-class Ship2 {
+class ShipP {
   constructor(){
     //size
      this.width = 100
@@ -194,17 +194,49 @@ class Obs {
   }
 }
 
-class Bullet {
+class BulletP {
   constructor(){
     //pos
-    this.x = ship2.x + ship2.width;
-    this.y = ship2.y - 40;
+    //this.x = ship2.x + ship2.width;
+    //this.y = ship2.y - 40;
+    this.x = 0;
+    this.y = 0;
     //size
     this.width = 60
     this.height =  60
     this.bullV + 10; 
     this.img = new Image()
-    this.img.src = images.bullet2;
+    this.img.src = images.bulletP;
+    this.boolean = true
+  
+  }
+  draw(){
+    this.x++
+    ctx.drawImage(this.img, this.x, this.y + 50, this.width, this.height) 
+    
+  }
+  isTouching(obstacle){
+    return (
+      this.x < obstacle.x + obstacle.width &&
+      this.x + this.width > obstacle.x &&
+      this.y < obstacle.y + obstacle.height &&
+      this.y + this.height > obstacle.y
+    )
+  }
+}
+class BulletG {
+  constructor(){
+    //pos
+    // this.x = ship.x + ship.width;
+    // this.y = ship.y + 30;
+    this.x = 0;
+    this.y = 0;
+    //size
+    this.width = 50;
+    this.height =  50;
+    this.bullV + 10; 
+    this.img = new Image()
+    this.img.src = images.bulletG;
     this.boolean = true
   
   }
@@ -222,7 +254,6 @@ class Bullet {
     )
   }
 }
-
 //clases
 
 function generateObs(){
@@ -244,18 +275,21 @@ function drawObstacles() {
 
 function checkColitions() {
   obstacles.forEach((obs, i) => {
-    if (ship.isTouching(obs)) {
+    if (shipG.isTouching(obs)) {
       obstacles.splice(i, 1)
-      ship.hp--
+      shipG.hp--
       gameOver();
     } 
-    if (ship2.isTouching(obs)) {
+    if (shipP.isTouching(obs)) {
       obstacles.splice(i, 1)
-      ship2.hp2--
+      shipP.hp2--
       gameOver();
     } 
-    if(bull.isTouching(obs)){
+    if(bullG.isTouching(obs)){
       obstacles.splice(i, 1)
+    }
+    if(bullP.isTouching(obs)){
+      obstacles.splice(i,1)
     }
   })
 }
@@ -265,14 +299,14 @@ function clearCanvas(){
 }
 
 function gameOver() { ///revisar el texto 
-  if (ship.hp === 0) {
+  if (shipG.hp === 0) {
     clearInterval(interval)
     interval= null;
     ctx.font = '50px Arial'
     ctx.fillStyle = 'purple'
     ctx.fillText('Jugador 2 gana!', canvas.width / 2 - 60, canvas.height / 2)
   }
-   if(ship2.hp2 === 0){
+   if(shipP.hp2 === 0){
     clearInterval(interval)
     interval= null;
     ctx.font = '50px Arial'
@@ -281,15 +315,23 @@ function gameOver() { ///revisar el texto
   }
 }
 
-function shoot (){
-  bull.boolean=false
+function shootG (){
+  bullG.boolean=false
+  bullG.x = shipG.x + shipG.width
+  bullG.y = shipG.y
+  console.log(shipG.y)
+}
+function shootP(){
+  bullP.boolean = false
+  bullP.x = shipP.x + shipP.width
+  bullP.y = shipP.y + shipP.width
 }
 
 const board = new Board();
-const ship = new Ship();
-const ship2 = new Ship2();
-const bull = new Bullet();
-
+const shipG = new ShipG();
+const shipP = new ShipP();
+const bullG = new BulletG();
+const bullP = new BulletP();
 
 
 window.onload = function() {
@@ -309,13 +351,12 @@ function startGame() {
 function restart(){
   /*interval = false;*/
   interval = null
-  ship.x = 10;
-  ship.y  = 0;
-  ship2.x = 10;
-  ship2.y  = 550;
+  shipG.x = 10;
+  shipG.y  = 0;
+  shipP.x = 10;
+  shipP.y  = 550;
   frames = 0;
   obstacles = [];
-  // scoreCount = 0;
   ctx.clearRect(0,0,canvas.width, canvas.height);
   startGame();
 }
@@ -324,32 +365,35 @@ document.onkeydown = (e) => {
   switch(e.keyCode){
     
       case 37:
-        ship.moveLeft()
+        shipG.moveLeft()
       break;
       case 38:
-        ship.moveUp()
+        shipG.moveUp()
       break;
       case 39:
-        ship.moveRight()
+        shipG.moveRight()
       break;
       case 40:
-        ship.moveDown()
+        shipG.moveDown()
       break;
       case 65:
-        ship2.moveLeft()
+        shipP.moveLeft()
       break;
       case 68:
-        ship2.moveRight()
+        shipP.moveRight()
       break;
       case 83:
-        ship2.moveDown()
+        shipP.moveDown()
       break;
       case 87:
-        ship2.moveUp()
+        shipP.moveUp()
       break;
       case 70:
-        shoot();
+        shootP();
        break;
+       case 13:
+         shootG();
+         break;
       default:
       break;
   }
@@ -367,9 +411,10 @@ function update(){
   frames++;
   clearCanvas();
   board.draw();
-  ship.draw();
-  ship2.draw();
-  if(!bull.boolean) bull.draw()
+  shipG.draw();
+  shipP.draw();
+  if(!bullP.boolean) bullP.draw()
+  if(!bullG.boolean) bullG.draw();
   checkColitions();
   drawObstacles();
   generateObs();
