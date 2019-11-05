@@ -24,7 +24,15 @@ canvas {
     width: 70px;
     height: 60px;
 }
+.buttons{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
 #start-button {
+  margin-bottom: 50px;
+}
+#restart-button{
   margin-bottom: 50px;
 }
 .game-board {
