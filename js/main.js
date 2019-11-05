@@ -5,7 +5,8 @@ const images = {
   ship1: './images/Ship1.png',
   ship6: './images/Ship6.png',
   obst1: './images/obs.png',
-  bullet:'./images/bullet.png'
+  bullet:'./images/bullet.png',
+  bullet2: './images/bullet2.png'
 };
 
 //sujetar canvas
@@ -196,21 +197,30 @@ class Obs {
 class Bullet {
   constructor(){
     //pos
-    this.x = ship2.x + 5;
-    this.y = ship2.y;
+    this.x = ship2.x + ship2.width;
+    this.y = ship2.y - 40;
     //size
-    this.width = 100
-    this.height =  100
+    this.width = 60
+    this.height =  60
+    this.bullV + 10; 
     this.img = new Image()
-    this.img.src = images.obst1
-    this.img.onload = () => {
-      this.draw();
-    };
+    this.img.src = images.bullet2;
+    this.boolean = true
+  
   }
   draw(){
-    this.x--;
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
-    }
+    this.x++
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height) 
+    
+  }
+  isTouching(obstacle){
+    return (
+      this.x < obstacle.x + obstacle.width &&
+      this.x + this.width > obstacle.x &&
+      this.y < obstacle.y + obstacle.height &&
+      this.y + this.height > obstacle.y
+    )
+  }
 }
 
 //clases
@@ -243,6 +253,9 @@ function checkColitions() {
       obstacles.splice(i, 1)
       ship2.hp2--
       gameOver();
+    } 
+    if(bull.isTouching(obs)){
+      obstacles.splice(i, 1)
     }
   })
 }
@@ -268,9 +281,15 @@ function gameOver() { ///revisar el texto
   }
 }
 
+function shoot (){
+  bull.boolean=false
+}
+
 const board = new Board();
 const ship = new Ship();
 const ship2 = new Ship2();
+const bull = new Bullet();
+
 
 
 window.onload = function() {
@@ -303,15 +322,16 @@ function restart(){
 
 document.onkeydown = (e) => {
   switch(e.keyCode){
+    
       case 37:
         ship.moveLeft()
-      return
+      break;
       case 38:
         ship.moveUp()
       break;
       case 39:
         ship.moveRight()
-      return
+      break;
       case 40:
         ship.moveDown()
       break;
@@ -327,17 +347,29 @@ document.onkeydown = (e) => {
       case 87:
         ship2.moveUp()
       break;
+      case 70:
+        shoot();
+       break;
       default:
       break;
   }
 }
-
+// document.onkeypress = (e) => {
+//   switch(e.keyCode){
+//     case 70:
+//       ship2.shoot();
+//       break;
+//       default: 
+//       break;
+//   }
+//}
 function update(){
   frames++;
   clearCanvas();
   board.draw();
   ship.draw();
   ship2.draw();
+  if(!bull.boolean) bull.draw()
   checkColitions();
   drawObstacles();
   generateObs();
