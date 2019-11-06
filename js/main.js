@@ -187,8 +187,16 @@ class Obs {
     };
   }
   draw() {
-    this.x--;
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    if(frames < 900){
+      this.x--;
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);  
+    }else if(frames > 900 && frames < 1500){
+      this.x -= 3;
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }else{
+      this.x -= 7;
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
   }
 }
 
@@ -253,7 +261,7 @@ class BulletG {
 //clases
 
 function generateObs(){
-  if (frames % 200 === 0) { //numero de obs en funcion del tiempo
+  if (frames % 90 === 0) { //numero de obs en funcion del tiempo
     const randomPosition = Math.floor(Math.random() * canvas.height) + 50;
     const obs = new Obs(randomPosition);
     obstacles.push(obs);
@@ -290,14 +298,20 @@ function clearCanvas(){
   ctx.clearRect(0,0, canvas.width, canvas.height);
 }
 
+let imgP = new Image()
+    imgP.src = images.winnerG;
+let imgG = new Image()
+    imgG.src = images.winnerP;
+
 function gameOver() { ///revisar el texto 
   if (shipG.hp === 0) {
     clearInterval(interval);
     interval= null;
-    ctx.font = '50px Arial';
-    ctx.fillStyle = 'purple';
-    ctx.fillText('Jugador 2 gana!', canvas.width / 2 - 60, canvas.height / 2);
-    //ctx.drawImage(imageP, 100, 100, 500, 240);
+    // ctx.font = '50px Arial';
+    // ctx.fillStyle = 'purple';
+    // ctx.fillText('Jugador 2 gana!', canvas.width / 2 - 60, canvas.height / 2);
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+    ctx.drawImage(imgG, 100, 100, 500, 240);
   }
    if(shipP.hp2 === 0){
     clearInterval(interval);
@@ -305,9 +319,9 @@ function gameOver() { ///revisar el texto
     // ctx.font = '50px Arial';
     // ctx.fillStyle = 'green';
     // ctx.fillText('Jugador 1 gana!', canvas.width / 2 , canvas.height / 2);
-    let imgP = new Image()
-    imgP.src = images.winnerG;
-    ctx.drawImage(this.imgP, 100, 100, 300, 300);
+    
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+    ctx.drawImage(imgP, 60, 80, 600, 240);
     console.log('morado pierde')
    }
   }
