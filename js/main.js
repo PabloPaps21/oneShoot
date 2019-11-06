@@ -6,7 +6,9 @@ const images = {
   ship6: './images/Ship6.png',
   obst1: './images/obs.png',
   bulletG:'./images/bullet.png',
-  bulletP: './images/bullet2.png'
+  bulletP: './images/bullet2.png',
+  winnerP:'./images/winnerMorado.png',
+  winnerG:'./images/winnerVerde.png'
 };
 
 //sujetar canvas
@@ -215,8 +217,8 @@ class BulletP {
     return (
       this.x < obstacle.x + obstacle.width &&
       this.x + this.width > obstacle.x &&
-      this.y < obstacle.y + obstacle.height &&
-      this.y + this.height > obstacle.y
+      this.y +40 < obstacle.y + obstacle.height &&
+      this.y + 40 + this.height > obstacle.y
     );
   }
 }
@@ -279,6 +281,7 @@ function checkColitions() {
     } 
     if(bullP.isTouching(obs)){
       obstacles.splice(i, 1);
+      console.log('si toca el morado')
     }
   })
 }
@@ -294,26 +297,29 @@ function gameOver() { ///revisar el texto
     ctx.font = '50px Arial';
     ctx.fillStyle = 'purple';
     ctx.fillText('Jugador 2 gana!', canvas.width / 2 - 60, canvas.height / 2);
+    //ctx.drawImage(imageP, 100, 100, 500, 240);
   }
    if(shipP.hp2 === 0){
     clearInterval(interval);
     interval= null;
-    ctx.font = '50px Arial';
-    ctx.fillStyle = 'green';
-    ctx.fillText('Jugador 1 gana!', canvas.width / 2 , canvas.height / 2);
+    // ctx.font = '50px Arial';
+    // ctx.fillStyle = 'green';
+    // ctx.fillText('Jugador 1 gana!', canvas.width / 2 , canvas.height / 2);
+    let imgP = new Image()
+    imgP.src = images.winnerG;
+    ctx.drawImage(this.imgP, 100, 100, 300, 300);
+    console.log('morado pierde')
+   }
   }
-}
-
 function shootG (){
   bullG.boolean=false;
   bullG.x = shipG.x + shipG.width;
   bullG.y = shipG.y + 25;
-  console.log(shipG.y);
 }
 function shootP(){
   bullP.boolean = false,
   bullP.x = shipP.x + shipP.width;
-  bullP.y = shipP.y - 30;
+  bullP.y = shipP.y - 25;
 }
 
 const board = new Board();
@@ -328,7 +334,7 @@ window.onload = function() {
     startGame();
   }; 
   document.getElementById("restart-button").onclick = function(){
-     restart();
+     location.reload();
   };
 };
 
