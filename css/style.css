@@ -5,36 +5,59 @@ html {
 }
 
 body {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-direction:column;
-  flex-wrap: wrap;
+  
   margin: 0;
+  background-image: url('../images/fb.jpg')
 }
-
 canvas {
-  border: 2px solid red;
+  border: 3px dotted #45ffdd;
+  
 }
 .game-intro{
-    width: 100px;
-    height: 80px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  text-align: center;
 }
-.game-intro img{
-    width: 70px;
-    height: 60px;
+.game-intro img {
+  margin-top:10px;
+  width: 350px;
+  height: 80px;
 }
 .buttons{
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-direction: row;
 }
 #start-button {
-  margin-bottom: 50px;
+  margin-top: 50px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 30px;
+  color: #45ffdd;
+  text-transform: uppercase;
+  background-color: Transparent;
+  border:1px solid #45ffdd;
+  padding: 10px;
 }
 #restart-button{
-  margin-bottom: 50px;
+  margin-top: 50px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 30px;
+  color: #45ffdd;
+  text-transform: uppercase;
+  background-color: Transparent;
+  border:1px solid #45ffdd;
+  padding: 10px;
+  width: 184px;
 }
 .game-board {
-  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 70px;
+}
+.game-board img{
+  width:400px;
+
 }

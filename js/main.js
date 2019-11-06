@@ -47,27 +47,23 @@ class Board {
 class ShipG {
   constructor(){
     //size
-    this.width = 100
-    this.height =  100
+    this.width = 100;
+    this.height =  100;
     //pos
     this.x = 30;
     this.y = 0;
-
-    //velocidad??
-    this.vx = 0
-    this.vy = 0
     
-    this.hp = 1
-    this.img = new Image()
+    this.hp = 1;
+    this.img = new Image();
     this.img.src = images.ship1;
     this.img.onload = () => {
-      this.draw()
+    this.draw();
     }
   }
   draw(){
     //abajo
      if (this.y > canvas.height - this.height) {
-      this.y = canvas.height - this.height
+      this.y = canvas.height - this.height;
     }
     //arriba
     else if(this.y <= 0){
@@ -75,13 +71,13 @@ class ShipG {
     }
     //derecha
      if (this.x > canvas.width - this.width){
-      this.x = canvas.width - this.width
+      this.x = canvas.width - this.width;
     }
     //izquierda
    if(this.x <= 0){
       this.x = 0;
     }
-  ctx.drawImage(this.img,this.x,this.y,this.width,this.height)
+  ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
   }
 
   isTouching(obstacle) {
@@ -91,48 +87,48 @@ class ShipG {
       this.x + this.width > obstacle.x &&
       this.y < obstacle.y + obstacle.height &&
       this.y + this.height > obstacle.y
-    )
+    );
   }
   moveLeft() {
-    this.x -= 8
-    this.position = 1
+    this.x -= 8;
+    this.position = 1;
   }
   moveRight() {
-    this.x += 8
-    this.position = 1
+    this.x += 8;
+    this.position = 1;
   }
   moveUp(){
-    this.y -= 7
-    this.position = 1
+    this.y -= 7;
+    this.position = 1;
   }
   moveDown(){
-    this.y += 7
-    this.position = 1
+    this.y += 7;
+    this.position = 1;
   }
 }
 
 class ShipP {
   constructor(){
     //size
-     this.width = 100
-     this.height =  100
+     this.width = 100;
+     this.height =  100;
     // //pos
      this.x = 30;
      this.y = 460;
     
-    this.hp2 = 1
+    this.hp2 = 1;
 
     this.img = new Image()
     this.img.src = images.ship6;
     this.img.onload = () => {
-      this.draw()
+      this.draw();
     }
 
   }
   draw(){
     //abajo
      if (this.y > canvas.height - this.height) {
-      this.y = canvas.height - this.height
+      this.y = canvas.height - this.height;
     }
     //arriba
     else if(this.y <= 0){
@@ -140,13 +136,13 @@ class ShipP {
     }
     //derecha
    if (this.x > canvas.width - this.width){
-      this.x = canvas.width - this.width
+      this.x = canvas.width - this.width;
     }
     //izquierda
    else if(this.x <= 0){
       this.x = 0;
     }
-    ctx.drawImage(this.img,this.x,this.y,this.width,this.height)
+    ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
   }
 
   isTouching(obstacle) {
@@ -156,41 +152,41 @@ class ShipP {
       this.x + this.width > obstacle.x &&
       this.y < obstacle.y + obstacle.height &&
       this.y + this.height > obstacle.y
-    )
+    );
   }
   moveLeft() {
-    this.x -= 8
-    this.position = 1
+    this.x -= 8;
+    this.position = 1;
   }
   moveRight() {
-    this.x += 8
-    this.position = 1
+    this.x += 8;
+    this.position = 1;
   }
   moveUp(){
-    this.y -= 7
-    this.position = 1
+    this.y -= 7;
+    this.position = 1;
   }
   moveDown(){
-    this.y += 7
-    this.position = 1
+    this.y += 7;
+    this.position = 1;
   }
 }
 
 class Obs {
   constructor(y) {
-    this.x = canvas.width
-    this.y = y
-    this.width = 30
-    this.height = 30
+    this.x = canvas.width;
+    this.y = y;
+    this.width = 30;
+    this.height = 30;
     this.img = new Image()
-    this.img.src = images.obst1
+    this.img.src = images.obst1;
     this.img.onload = () => {
       this.draw();
     };
   }
   draw() {
     this.x--;
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 }
 
@@ -202,17 +198,17 @@ class BulletP {
     this.x = 0;
     this.y = 0;
     //size
-    this.width = 60
-    this.height =  60
+    this.width = 60;
+    this.height =  60;
     this.bullV + 10; 
-    this.img = new Image()
+    this.img = new Image();
     this.img.src = images.bulletP;
-    this.boolean = true
+    this.boolean = true;
   
   }
   draw(){
-    this.x++
-    ctx.drawImage(this.img, this.x, this.y + 50, this.width, this.height) 
+    this.x++;
+    ctx.drawImage(this.img, this.x, this.y + 50, this.width, this.height);
     
   }
   isTouching(obstacle){
@@ -221,7 +217,7 @@ class BulletP {
       this.x + this.width > obstacle.x &&
       this.y < obstacle.y + obstacle.height &&
       this.y + this.height > obstacle.y
-    )
+    );
   }
 }
 class BulletG {
@@ -235,15 +231,13 @@ class BulletG {
     this.width = 50;
     this.height =  50;
     this.bullV + 10; 
-    this.img = new Image()
+    this.img = new Image();
     this.img.src = images.bulletG;
-    this.boolean = true
-  
+    this.boolean = true;
   }
   draw(){
-    this.x++
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height) 
-    
+    this.x++;
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
   isTouching(obstacle){
     return (
@@ -258,38 +252,33 @@ class BulletG {
 
 function generateObs(){
   if (frames % 200 === 0) { //numero de obs en funcion del tiempo
-    const randomPosition = Math.floor(Math.random() * canvas.height) + 50
-    const obs = new Obs(randomPosition)
-    obstacles.push(obs)
-  }
-  else if(frames % 100 === 0 > 3000 ){
-    const randomPosition = Math.floor(Math.random() * canvas.height) + 50
-    const obs = new Obs(randomPosition)
-    obstacles.push(obs)
+    const randomPosition = Math.floor(Math.random() * canvas.height) + 50;
+    const obs = new Obs(randomPosition);
+    obstacles.push(obs);
   }
 }
 function drawObstacles() {
   generateObs();
-  obstacles.forEach(obs => obs.draw())
+  obstacles.forEach(obs => obs.draw());
 }
 
 function checkColitions() {
   obstacles.forEach((obs, i) => {
     if (shipG.isTouching(obs)) {
-      obstacles.splice(i, 1)
-      shipG.hp--
+      obstacles.splice(i, 1);
+      shipG.hp--;
       gameOver();
     } 
     if (shipP.isTouching(obs)) {
-      obstacles.splice(i, 1)
-      shipP.hp2--
+      obstacles.splice(i, 1);
+      shipP.hp2--;
       gameOver();
-    } 
-    if(bullG.isTouching(obs)){
-      obstacles.splice(i, 1)
     }
+    if(bullG.isTouching(obs)){
+      obstacles.splice(i,1);
+    } 
     if(bullP.isTouching(obs)){
-      obstacles.splice(i,1)
+      obstacles.splice(i, 1);
     }
   })
 }
@@ -300,31 +289,31 @@ function clearCanvas(){
 
 function gameOver() { ///revisar el texto 
   if (shipG.hp === 0) {
-    clearInterval(interval)
+    clearInterval(interval);
     interval= null;
-    ctx.font = '50px Arial'
-    ctx.fillStyle = 'purple'
-    ctx.fillText('Jugador 2 gana!', canvas.width / 2 - 60, canvas.height / 2)
+    ctx.font = '50px Arial';
+    ctx.fillStyle = 'purple';
+    ctx.fillText('Jugador 2 gana!', canvas.width / 2 - 60, canvas.height / 2);
   }
    if(shipP.hp2 === 0){
-    clearInterval(interval)
+    clearInterval(interval);
     interval= null;
-    ctx.font = '50px Arial'
-    ctx.fillStyle = 'green'
-    ctx.fillText('Jugador 1 gana!', canvas.width / 2 , canvas.height / 2)
+    ctx.font = '50px Arial';
+    ctx.fillStyle = 'green';
+    ctx.fillText('Jugador 1 gana!', canvas.width / 2 , canvas.height / 2);
   }
 }
 
 function shootG (){
-  bullG.boolean=false
-  bullG.x = shipG.x + shipG.width
-  bullG.y = shipG.y
-  console.log(shipG.y)
+  bullG.boolean=false;
+  bullG.x = shipG.x + shipG.width;
+  bullG.y = shipG.y + 25;
+  console.log(shipG.y);
 }
 function shootP(){
-  bullP.boolean = false
-  bullP.x = shipP.x + shipP.width
-  bullP.y = shipP.y + shipP.width
+  bullP.boolean = false,
+  bullP.x = shipP.x + shipP.width;
+  bullP.y = shipP.y - 30;
 }
 
 const board = new Board();
@@ -339,13 +328,14 @@ window.onload = function() {
     startGame();
   }; 
   document.getElementById("restart-button").onclick = function(){
-    restart();
-  }
+     restart();
+  };
 };
 
 function startGame() {
   if(interval) return;
   interval = setInterval(update, 1000 / 90); // /60
+
 };
 
 function restart(){
@@ -355,6 +345,8 @@ function restart(){
   shipG.y  = 0;
   shipP.x = 10;
   shipP.y  = 550;
+  bullP.boolean = false
+  bullG.boolean = false
   frames = 0;
   obstacles = [];
   ctx.clearRect(0,0,canvas.width, canvas.height);
@@ -365,28 +357,28 @@ document.onkeydown = (e) => {
   switch(e.keyCode){
     
       case 37:
-        shipG.moveLeft()
+        shipG.moveLeft();
       break;
       case 38:
-        shipG.moveUp()
+        shipG.moveUp();
       break;
       case 39:
-        shipG.moveRight()
+        shipG.moveRight();
       break;
       case 40:
-        shipG.moveDown()
+        shipG.moveDown();
       break;
       case 65:
-        shipP.moveLeft()
+        shipP.moveLeft();
       break;
       case 68:
-        shipP.moveRight()
+        shipP.moveRight();
       break;
       case 83:
-        shipP.moveDown()
+        shipP.moveDown();
       break;
       case 87:
-        shipP.moveUp()
+        shipP.moveUp();
       break;
       case 70:
         shootP();
@@ -398,22 +390,13 @@ document.onkeydown = (e) => {
       break;
   }
 }
-// document.onkeypress = (e) => {
-//   switch(e.keyCode){
-//     case 70:
-//       ship2.shoot();
-//       break;
-//       default: 
-//       break;
-//   }
-//}
 function update(){
   frames++;
   clearCanvas();
   board.draw();
   shipG.draw();
   shipP.draw();
-  if(!bullP.boolean) bullP.draw()
+  if(!bullP.boolean) bullP.draw();
   if(!bullG.boolean) bullG.draw();
   checkColitions();
   drawObstacles();
