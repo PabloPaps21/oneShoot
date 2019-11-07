@@ -9,10 +9,15 @@ body {
   margin: 0;
   background-image: url('../images/fb.jpg')
 }
-canvas {
+/*canvas {
   border: 3px dotted #45ffdd;
-  
+}*/
+@-webkit-keyframes blink { 50% { border-color: #45ffdd;   }  }
+canvas{ 
+	border: 4px solid;
+	-webkit-animation: blink .5s step-end infinite alternate; 
 }
+
 .game-intro{
   display: block;
   margin-left: auto;

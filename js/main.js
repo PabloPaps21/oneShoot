@@ -2,9 +2,10 @@ const images = {
   fondo1: './images/fondo1.png',
   fondo2: './images/fondo2.jpg',
   fondo3: 'https://ak4.picdn.net/shutterstock/videos/1016737804/thumb/1.jpg',
-  ship1: './images/Ship1.png',
-  ship6: './images/Ship6.png',
+  ship1: './images/shipG.png',
+  ship6: './images/shipP.png',
   obst1: './images/obs.png',
+  obst2: './images/obs3.png',
   bulletG:'./images/bullet.png',
   bulletP: './images/bullet2.png',
   winnerP:'./images/winnerMorado.png',
@@ -21,6 +22,7 @@ let interval;
 let frames = 0;
 let obstacles = [];
 let scoreCount = 0;
+let keys = [];
 
 //clases
 class Board {
@@ -49,8 +51,8 @@ class Board {
 class ShipG {
   constructor(){
     //size
-    this.width = 100;
-    this.height =  100;
+    this.width = 80;
+    this.height =  50;
     //pos
     this.x = 30;
     this.y = 0;
@@ -92,28 +94,36 @@ class ShipG {
     );
   }
   moveLeft() {
-    this.x -= 8;
-    this.position = 1;
+    if(keys[37]){
+      this.x -= 5;
+      this.position = 1;
+    }
   }
   moveRight() {
-    this.x += 8;
-    this.position = 1;
+    if(keys[39]){
+      this.x += 5;
+      this.position = 1;
+    }
   }
   moveUp(){
-    this.y -= 7;
-    this.position = 1;
+    if(keys[38]){
+      this.y -= 6;
+      this.position = 1;
+    }
   }
   moveDown(){
-    this.y += 7;
-    this.position = 1;
+    if(keys[40]){
+      this.y += 6;
+      this.position = 1;
+    }
   }
 }
 
 class ShipP {
   constructor(){
     //size
-     this.width = 100;
-     this.height =  100;
+     this.width = 80;
+     this.height =  60;
     // //pos
      this.x = 30;
      this.y = 460;
@@ -157,44 +167,61 @@ class ShipP {
     );
   }
   moveLeft() {
-    this.x -= 8;
-    this.position = 1;
+    if(keys[65]){
+      this.x -= 5;
+      this.position = 1;
+    }
   }
   moveRight() {
-    this.x += 8;
-    this.position = 1;
+    if(keys[68]){
+      this.x += 5;
+      this.position = 1;
+    }
   }
   moveUp(){
-    this.y -= 7;
-    this.position = 1;
+    if(keys[87]){
+      this.y -= 6;
+      this.position = 1;
+    }
   }
-  moveDown(){
-    this.y += 7;
-    this.position = 1;
+  moveDown(){ 
+    if(keys[83]){
+      this.y += 6;
+      this.position = 1;
+    }
   }
 }
-
+;
 class Obs {
   constructor(y) {
     this.x = canvas.width;
     this.y = y;
-    this.width = 30;
-    this.height = 30;
+    this.width = 40;
+    this.height = 40;
     this.img = new Image()
     this.img.src = images.obst1;
+    this.imgObs2 = new Image()
+    this.imgObs2.src = images.obst2
     this.img.onload = () => {
       this.draw();
     };
   }
   draw() {
-    if(frames < 900){
-      this.x--;
-      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);  
-    }else if(frames > 900 && frames < 1500){
-      this.x -= 3;
-      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }else{
-      this.x -= 7;
+      if(frames < 1000){
+        this.x -= 3;
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);  
+      }else if(frames > 1000 && frames < 1500){
+        this.x -= 5;
+        //ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        ctx.drawImage(this.imgObs2,this.x, this.y, 90, 70);
+      }else if (frames > 1500 && frames < 2000){
+        this.x -= 8;
+        ctx.drawImage(this.imgObs2, this.x, this.y, 100, 100);
+      }else if(frames > 2100  && frames < 2200) {
+        this.x -= 10 
+        ctx.drawImage(this.imgObs2,this.x, this.y, 80, 80);
+      }else {
+      this.x -= 8;
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
   }
@@ -258,10 +285,22 @@ class BulletG {
     )
   }
 }
+
+// class mainMusic{
+//   constructor(){
+
+//   }
+// }
+
+let audio = new Audio('./sound/lol.mp3');
+let soundG = new Audio('./sound/laser.mp3');
+let soundP = new Audio('./sound/laser2.mp3');
+let soundBoom = new Audio('./sound/boom.mp3');
+
 //clases
 
 function generateObs(){
-  if (frames % 90 === 0) { //numero de obs en funcion del tiempo
+  if (frames % 80 === 0) { //numero de obs en funcion del tiempo
     const randomPosition = Math.floor(Math.random() * canvas.height) + 50;
     const obs = new Obs(randomPosition);
     obstacles.push(obs);
@@ -277,11 +316,13 @@ function checkColitions() {
     if (shipG.isTouching(obs)) {
       obstacles.splice(i, 1);
       shipG.hp--;
+      soundBoom.play();
       gameOver();
     } 
     if (shipP.isTouching(obs)) {
       obstacles.splice(i, 1);
       shipP.hp2--;
+      soundBoom.play();
       gameOver();
     }
     if(bullG.isTouching(obs)){
@@ -304,6 +345,8 @@ let imgG = new Image()
     imgG.src = images.winnerP;
 
 function gameOver() { ///revisar el texto 
+  audio.pause();
+  audio.currentTime = 0;
   if (shipG.hp === 0) {
     clearInterval(interval);
     interval= null;
@@ -326,14 +369,16 @@ function gameOver() { ///revisar el texto
    }
   }
 function shootG (){
+  soundG.play()
   bullG.boolean=false;
   bullG.x = shipG.x + shipG.width;
-  bullG.y = shipG.y + 25;
+  bullG.y = shipG.y;
 }
 function shootP(){
+  soundP.play();
   bullP.boolean = false,
   bullP.x = shipP.x + shipP.width;
-  bullP.y = shipP.y - 25;
+  bullP.y = shipP.y -50;
 }
 
 const board = new Board();
@@ -353,6 +398,7 @@ window.onload = function() {
 };
 
 function startGame() {
+  audio.play();
   if(interval) return;
   interval = setInterval(update, 1000 / 90); // /60
 
@@ -373,49 +419,78 @@ function restart(){
   startGame();
 }
 
-document.onkeydown = (e) => {
-  switch(e.keyCode){
+// document.onkeydown = (e) => {
+//   switch(e.keyCode){
     
-      case 37:
-        shipG.moveLeft();
-      break;
-      case 38:
-        shipG.moveUp();
-      break;
-      case 39:
-        shipG.moveRight();
-      break;
-      case 40:
-        shipG.moveDown();
-      break;
-      case 65:
-        shipP.moveLeft();
-      break;
-      case 68:
-        shipP.moveRight();
-      break;
-      case 83:
-        shipP.moveDown();
-      break;
-      case 87:
-        shipP.moveUp();
-      break;
-      case 70:
-        shootP();
-       break;
-       case 13:
-         shootG();
-         break;
-      default:
-      break;
+//       case 37:
+//         shipG.moveLeft();
+//       break;
+//       case 38:
+//         shipG.moveUp();
+//       break;
+//       case 39:
+//         shipG.moveRight();
+//       break;
+//       case 40:
+//         shipG.moveDown();
+//       break;
+//       case 65:
+//         shipP.moveLeft();
+//       break;
+//       case 68:
+//         shipP.moveRight();
+//       break;
+//       case 83:
+//         shipP.moveDown();
+//       break;
+//       case 87:
+//         shipP.moveUp();
+//       break;
+//       case 70:
+//         shootP();
+//        break;
+//        case 13:
+//          shootG();
+//          break;
+//       default:
+//       break;
+//   }
+// }
+
+document.body.addEventListener('keydown', (e) => {
+  switch(e.keyCode){
+    case 70:
+      soundG.play();
+      shootP();
+    break;
+    case 13:
+      soundP.play();
+      shootG();
+      break
   }
-}
+  keys[e.keyCode] = true;
+});
+
+document.body.addEventListener('keyup', (e) => {
+  keys[e.keyCode] = false;
+});
+
 function update(){
   frames++;
   clearCanvas();
   board.draw();
   shipG.draw();
   shipP.draw();
+  shipG.moveLeft();
+	shipP.moveLeft();
+  shipG.moveRight();
+  shipP.moveRight();
+  shipG.moveUp();
+  shipP.moveUp();
+  shipP.moveDown();
+  shipG.moveDown();
+  
+
   if(!bullP.boolean) bullP.draw();
   if(!bullG.boolean) bullG.draw();
   checkColitions();
