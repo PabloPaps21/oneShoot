@@ -296,6 +296,7 @@ let audio = new Audio('./sound/lol.mp3');
 let soundG = new Audio('./sound/laser.mp3');
 let soundP = new Audio('./sound/laser2.mp3');
 let soundBoom = new Audio('./sound/boom.mp3');
+let obsExp = new Audio('./sound/obsExplo.mp3');
 
 //clases
 
@@ -326,9 +327,11 @@ function checkColitions() {
       gameOver();
     }
     if(bullG.isTouching(obs)){
+      obsExp.play(); //sonido al tocar con obstaculo
       obstacles.splice(i,1);
     } 
     if(bullP.isTouching(obs)){
+      obsExp.play();//sonido al tocar con obstaculo
       obstacles.splice(i, 1);
       console.log('si toca el morado')
     }
