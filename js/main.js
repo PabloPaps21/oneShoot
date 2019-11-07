@@ -207,8 +207,8 @@ class Obs {
     };
   }
   draw() {
-      if(frames < 1000){
-        this.x -= 3;
+      if(frames < 900){
+        this.x -= 2;
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);  
       }else if(frames > 1000 && frames < 1500){
         this.x -= 5;
@@ -216,7 +216,7 @@ class Obs {
         ctx.drawImage(this.imgObs2,this.x, this.y, 90, 70);
       }else if (frames > 1500 && frames < 2000){
         this.x -= 8;
-        ctx.drawImage(this.imgObs2, this.x, this.y, 100, 100);
+        ctx.drawImage(this.img, this.x, this.y, 150, 150);
       }else if(frames > 2100  && frames < 2200) {
         this.x -= 10 
         ctx.drawImage(this.imgObs2,this.x, this.y, 80, 80);
@@ -286,11 +286,6 @@ class BulletG {
   }
 }
 
-// class mainMusic{
-//   constructor(){
-
-//   }
-// }
 
 let audio = new Audio('./sound/lol.mp3');
 let soundG = new Audio('./sound/laser.mp3');
@@ -301,6 +296,7 @@ let obsExp = new Audio('./sound/obsExplo.mp3');
 //clases
 
 function generateObs(){
+  
   if (frames % 80 === 0) { //numero de obs en funcion del tiempo
     const randomPosition = Math.floor(Math.random() * canvas.height) + 50;
     const obs = new Obs(randomPosition);
@@ -347,28 +343,32 @@ let imgP = new Image()
 let imgG = new Image()
     imgG.src = images.winnerP;
 
+let apagar;
+
 function gameOver() { ///revisar el texto 
   audio.pause();
+  obstacles = []
+  
   audio.currentTime = 0;
   if (shipG.hp === 0) {
     clearInterval(interval);
+    apagar = true;
     interval= null;
-    // ctx.font = '50px Arial';
-    // ctx.fillStyle = 'purple';
-    // ctx.fillText('Jugador 2 gana!', canvas.width / 2 - 60, canvas.height / 2);
+    //morado gana
     ctx.clearRect(0,0, canvas.width, canvas.height);
-    ctx.drawImage(imgG, 100, 100, 500, 240);
+    ctx.drawImage(imgG, 230, 150, 260, 160);
+    //apagar = true;
+    keys = [];
   }
    if(shipP.hp2 === 0){
     clearInterval(interval);
+    apagar= true;
     interval= null;
-    // ctx.font = '50px Arial';
-    // ctx.fillStyle = 'green';
-    // ctx.fillText('Jugador 1 gana!', canvas.width / 2 , canvas.height / 2);
-    
+    //verde gana 
     ctx.clearRect(0,0, canvas.width, canvas.height);
-    ctx.drawImage(imgP, 60, 80, 600, 240);
-    console.log('morado pierde')
+    ctx.drawImage(imgP, 230, 150, 260, 160);
+    console.log('morado pierde');
+    keys = [];
    }
   }
 function shootG (){
@@ -393,7 +393,10 @@ const bullP = new BulletP();
 
 window.onload = function() {
   document.getElementById("start-button").onclick = function() {
-    startGame();
+    if(!keys[13]){
+      startGame();
+      apagar = false;
+    }   
   }; 
   document.getElementById("restart-button").onclick = function(){
      location.reload();
@@ -404,7 +407,9 @@ function startGame() {
   audio.play();
   if(interval) return;
   interval = setInterval(update, 1000 / 90); // /60
-
+  if (event.keyCode == 32) {
+    return false;
+}
 };
 
 function restart(){
@@ -467,10 +472,25 @@ document.body.addEventListener('keydown', (e) => {
       shootP();
     break;
     case 13:
+      // if(apagar){
+      //   return
+      //   keys[13] = false;
+      //   console.log('ayuda')
+      // }else {
+      //   soundP.play();
+      //   shootG();
+      // }  
       soundP.play();
-      shootG();
-      break
-  }
+        shootG();
+      break;
+      case 32:
+          if (event.keyCode == 32) {
+            return false;
+        }
+      break;
+     }
+      
+     
   keys[e.keyCode] = true;
 });
 
@@ -492,8 +512,6 @@ function update(){
   shipP.moveUp();
   shipP.moveDown();
   shipG.moveDown();
-  
-
   if(!bullP.boolean) bullP.draw();
   if(!bullG.boolean) bullG.draw();
   checkColitions();
