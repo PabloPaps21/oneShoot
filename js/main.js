@@ -24,6 +24,14 @@ let obstacles = [];
 let scoreCount = 0;
 let keys = [];
 
+
+let audio = new Audio('./sound/lol.mp3');
+let soundG = new Audio('./sound/laser.mp3');
+let soundP = new Audio('./sound/laser2.mp3');
+let soundBoom = new Audio('./sound/boom.mp3');
+let obsExp = new Audio('./sound/obsExplo.mp3');
+
+
 //clases
 class Board {
   constructor(){
@@ -39,7 +47,7 @@ class Board {
       };
     }
   draw(){
-    this.x--; //velocidad fondo
+    this.x -=2; //velocidad fondo
     //si no tengo el if, la imagen solo se estira, aparece la imagen y se va intercaando con la misma para que no se vea cortada
     if(this.x < -canvas.width) this.x = 0;
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -207,23 +215,29 @@ class Obs {
     };
   }
   draw() {
-      if(frames < 900){
+      if(frames < 1000){
         this.x -= 2;
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);  
-      }else if(frames > 1000 && frames < 1500){
-        this.x -= 5;
-        //ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-        ctx.drawImage(this.imgObs2,this.x, this.y, 90, 70);
-      }else if (frames > 1500 && frames < 2000){
-        this.x -= 8;
+      }else if(frames > 1000 && frames < 3000){
+        this.x -= 3;
+        ctx.drawImage(this.imgObs2,this.x, this.y, 100, 100);
+      }else if (frames > 2000 && frames < 3000){
+        this.x -= 3;
         ctx.drawImage(this.img, this.x, this.y, 150, 150);
-      }else if(frames > 2100  && frames < 2200) {
+      }else if(frames > 3000  && frames < 3500) {
         this.x -= 10 
         ctx.drawImage(this.imgObs2,this.x, this.y, 80, 80);
-      }else {
+      }else if(frames > 3500 && frames < 40000){
       this.x -= 8;
-      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
+      ctx.drawImage(this.imgObs2, this.x, this.y, 100, 100);
+      // ctx.drawImage(this.img, this.x, this.y, this.width, this.height); 
+       }else {
+         this.x -= 2
+         ctx.drawImage(this.imgObs2, this.x, this.y, 250, 250);
+
+   }     
+
+    
   }
 }
 
@@ -252,8 +266,8 @@ class BulletP {
     return (
       this.x < obstacle.x + obstacle.width &&
       this.x + this.width > obstacle.x &&
-      this.y +40 < obstacle.y + obstacle.height &&
-      this.y + 40 + this.height > obstacle.y
+      this.y < obstacle.y + obstacle.height &&
+      this.y + this.height > obstacle.y
     );
   }
 }
@@ -286,19 +300,12 @@ class BulletG {
   }
 }
 
-
-let audio = new Audio('./sound/lol.mp3');
-let soundG = new Audio('./sound/laser.mp3');
-let soundP = new Audio('./sound/laser2.mp3');
-let soundBoom = new Audio('./sound/boom.mp3');
-let obsExp = new Audio('./sound/obsExplo.mp3');
-
 //clases
 
 function generateObs(){
   
-  if (frames % 80 === 0) { //numero de obs en funcion del tiempo
-    const randomPosition = Math.floor(Math.random() * canvas.height) + 50;
+  if (frames % 70 === 0) { //numero de obs en funcion del tiempo
+    const randomPosition = Math.floor(Math.random() * canvas.height);
     const obs = new Obs(randomPosition);
     obstacles.push(obs);
   }
@@ -345,11 +352,12 @@ let imgG = new Image()
 
 let apagar;
 
-function gameOver() { ///revisar el texto 
+function gameOver() {  
   audio.pause();
   obstacles = []
-  
+  clearCanvas();
   audio.currentTime = 0;
+
   if (shipG.hp === 0) {
     clearInterval(interval);
     apagar = true;
@@ -357,7 +365,6 @@ function gameOver() { ///revisar el texto
     //morado gana
     ctx.clearRect(0,0, canvas.width, canvas.height);
     ctx.drawImage(imgG, 230, 150, 260, 160);
-    //apagar = true;
     keys = [];
   }
    if(shipP.hp2 === 0){
@@ -393,10 +400,15 @@ const bullP = new BulletP();
 
 window.onload = function() {
   document.getElementById("start-button").onclick = function() {
+    
     if(!keys[13]){
       startGame();
       apagar = false;
-    }   
+    }
+     if(keys[32]){
+      this.blur();
+      return false;
+    }
   }; 
   document.getElementById("restart-button").onclick = function(){
      location.reload();
@@ -407,10 +419,15 @@ function startGame() {
   audio.play();
   if(interval) return;
   interval = setInterval(update, 1000 / 90); // /60
-  if (event.keyCode == 32) {
-    return false;
-}
+  ctx.clearRect(0,0,canvas.width, canvas.height);
+  startGame();
 };
+
+function restrictSpace() {
+  if (event.keyCode === 32) {
+      return false;
+  }
+}
 
 function restart(){
   /*interval = false;*/
@@ -425,46 +442,10 @@ function restart(){
   obstacles = [];
   ctx.clearRect(0,0,canvas.width, canvas.height);
   startGame();
+  restrictSpace();
 }
 
-// document.onkeydown = (e) => {
-//   switch(e.keyCode){
-    
-//       case 37:
-//         shipG.moveLeft();
-//       break;
-//       case 38:
-//         shipG.moveUp();
-//       break;
-//       case 39:
-//         shipG.moveRight();
-//       break;
-//       case 40:
-//         shipG.moveDown();
-//       break;
-//       case 65:
-//         shipP.moveLeft();
-//       break;
-//       case 68:
-//         shipP.moveRight();
-//       break;
-//       case 83:
-//         shipP.moveDown();
-//       break;
-//       case 87:
-//         shipP.moveUp();
-//       break;
-//       case 70:
-//         shootP();
-//        break;
-//        case 13:
-//          shootG();
-//          break;
-//       default:
-//       break;
-//   }
-// }
-
+ 
 document.body.addEventListener('keydown', (e) => {
   switch(e.keyCode){
     case 70:
@@ -472,31 +453,18 @@ document.body.addEventListener('keydown', (e) => {
       shootP();
     break;
     case 13:
-      // if(apagar){
-      //   return
-      //   keys[13] = false;
-      //   console.log('ayuda')
-      // }else {
-      //   soundP.play();
-      //   shootG();
-      // }  
       soundP.play();
         shootG();
       break;
-      case 32:
-          if (event.keyCode == 32) {
-            return false;
-        }
-      break;
      }
-      
-     
   keys[e.keyCode] = true;
 });
 
 document.body.addEventListener('keyup', (e) => {
   keys[e.keyCode] = false;
 });
+
+
 
 function update(){
   frames++;

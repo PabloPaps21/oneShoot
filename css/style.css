@@ -12,14 +12,14 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
-canvas {
+/*canvas {
   border: 3px dotted #45ffdd;
-}
-/* @-webkit-keyframes blink { 50% { border-color: #45ffdd;   }  }
+}*/
+ @-webkit-keyframes blink { 50% { border-color: #45ffdd;   }  }
 canvas{ 
 	border: 4px solid;
 	-webkit-animation: blink .5s step-end infinite alternate; 
-} */
+} 
 
 .game-intro{
   display: block;
