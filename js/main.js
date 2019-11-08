@@ -219,20 +219,20 @@ class Obs {
         this.x -= 2;
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);  
       }else if(frames > 1000 && frames < 3000){
-        this.x -= 3;
-        ctx.drawImage(this.imgObs2,this.x, this.y, 60, 60);
+        this.x -= 8;
+        ctx.drawImage(this.imgObs2,this.x, this.y, 80, 80);
       }else if (frames > 2000 && frames < 3000){
-        this.x -= 5;
+        this.x -= 7;
         ctx.drawImage(this.img, this.x, this.y, 150, 150);
       }else if(frames > 3000  && frames < 3500) {
         this.x -= 10 
-        ctx.drawImage(this.imgObs2,this.x, this.y, 80, 80);
+        ctx.drawImage(this.imgObs2,this.x, this.y, 90, 90);
       }else if(frames > 3500 && frames < 40000){
       this.y += 8;
       ctx.drawImage(this.img, this.x, this.y, 100, 100);
       // ctx.drawImage(this.img, this.x, this.y, this.width, this.height); 
        }else {
-         this.x -= 2
+         this.x -= 6
          ctx.drawImage(this.img, this.x, this.y, 250, 250);
 
    }     

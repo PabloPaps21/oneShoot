@@ -47,6 +47,7 @@ canvas{
   background-color: Transparent;
   border:1px solid #45ffdd;
   padding: 10px;
+  width: 270px;
 }
 #restart-button{
   margin-top: 50px;
@@ -57,7 +58,7 @@ canvas{
   background-color: Transparent;
   border:1px solid #45ffdd;
   padding: 10px;
-  width: 184px;
+  width: 244px;
 }
 .game-board {
   display: flex;
